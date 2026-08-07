@@ -1,0 +1,54 @@
+name: produce-figures
+on: [push, workflow_dispatch]
+
+jobs:
+  install:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.10", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install -r requirements.txt
+      - run: python -c "import matplotlib, numpy, scipy, pandas, seaborn, tqdm; print('deps OK')"
+
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t bbcodes .
+      - run: docker run --rm bbcodes
+
+  figures:
+    needs: install
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements.txt
+      - name: execute the notebook
+        env:
+          QECC_CODES_DATA: ${{ github.workspace }}
+          QECC_CODES_FIGURES: ${{ github.workspace }}/figures
+        run: |
+          mkdir -p figures
+          jupyter nbconvert --to notebook --execute \
+            --ExecutePreprocessor.timeout=-1 \
+            --output executed.ipynb postProcessingDatasetVisualization.ipynb
+      - name: commit refreshed figures
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add figures/
+          git diff --cached --quiet || git commit -m "refresh figures [skip ci]"
+          git push
