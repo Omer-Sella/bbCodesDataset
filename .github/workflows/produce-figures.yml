@@ -44,7 +44,7 @@ jobs:
           mkdir -p figures
           jupyter nbconvert --to notebook --execute \
             --ExecutePreprocessor.timeout=-1 \
-            --output executed.ipynb postProcessingDatasetVisualization.ipynb
+            --output executed.ipynb postprocessingDatasetVisualization.ipynb
       - name: commit refreshed figures
         run: |
           git config user.name "github-actions"
