@@ -1,4 +1,4 @@
-# A dataset of Bicycle Bivariate quantum error correcting codes
+# A dataset of Bivariate Bicycle quantum error correcting codes
 
 ## What's in here ?
 For each \(l,m\) in \(\{6,6 9,6 15,3 5,15 3,27 21,18 12,6\}\) there is a folder, and in it a collection of .jsonl files containing code parameters, which error points they were sampled on, how many samples, what's the logical error rate observed using BP+OSD0.
