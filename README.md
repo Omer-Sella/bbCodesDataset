@@ -10,7 +10,20 @@ In addition there is a jupyternotebook (which you can open in Colab) to reproduc
 I kept it as light as possible, so anyone who wants to use this dataset doesn't have to fight dependencies.
 
 There is also a dockerfile that you can use - it will clone the repository, create the necessary environment variables and reproduce the relevant figures from the paper.
- 
+
+
+ Please cite this repository using:
+
+ @misc{sella2026bbcodesdataset,
+  author       = {Sella, Omer S.},
+  title        = {{bbCodesDataset}: decoder-evaluation data for bivariate bicycle codes},
+  year         = {2026},
+  publisher    = {Zenodo},
+  version      = {ReleaseZ},
+  doi          = {10.5281/zenodo.21904330},
+  url          = {https://github.com/Omer-Sella/bbCodesDataset},
+  note         = {Dataset and figure-reproduction scripts}
+}
 
 
 ![k distribution 6,6](figures/kDistribution_l_6_m_6.png)
